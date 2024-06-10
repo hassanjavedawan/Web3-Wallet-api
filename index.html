@@ -1,0 +1,83 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wallet connector</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0%;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      button {
+        background-color: #415ff8;
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      button:hover {
+        opacity: 0.7;
+      }
+      #result {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div id="result">v</div>
+      <button id="connectButton">Metamask</button>
+      <button>Binance</button>
+      <button>Trust</button>
+    </div>
+
+    <script>
+        console.log('window', window);
+      document
+        .getElementById("connectButton")
+        .addEventListener("click", async () => {
+          try {
+            const response = await fetch("http://localhost:3001/api/metaMask", {
+              // Relative URL assuming backend is served from the same domain
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              // Add any payload if needed
+              body: JSON.stringify({
+                /* payload */
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to connect to MetaMask");
+            }
+
+            const data = await response.json();
+            document.getElementById(
+              "result",
+            ).innerText = `Connected to MetaMask. Address: ${data.address}`;
+          } catch (error) {
+            console.error("Error connecting to MetaMask:", error);
+            document.getElementById("result").innerText =
+              "Error connecting to MetaMask. Please try again later.";
+          }
+        });
+    </script>
+  </body>
+</html>
